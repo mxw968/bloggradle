@@ -20,7 +20,7 @@ public class User {
     @Column(nullable = false)
     private String email; // 邮箱
 
-    public User() {
+    protected User() { // 无参构造函数；设为protected防止直接使用
 
     }
 
@@ -52,5 +52,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User[id=%d, name='%s', email='%s']", id, name, email);
     }
 }
