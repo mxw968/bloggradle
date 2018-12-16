@@ -1,14 +1,23 @@
 package com.zj.bloggradle.domain;
 
+import javax.persistence.*;
+
 /**
  * User实体类
  *
  * @author 周杰
  * @date 2018/11/30
  */
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 实体唯一标识
+
+    @Column(nullable = false)
     private String name; // 用户名称
+
+    @Column(nullable = false)
     private String email; // 邮箱
 
     public User() {

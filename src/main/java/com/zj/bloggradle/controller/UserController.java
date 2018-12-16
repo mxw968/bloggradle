@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User 控制器
@@ -22,15 +24,30 @@ public class UserController {
     private UserRepository userRepository;
 
     /**
-     * 查询所有用户
+     * 读取数据库用户数据返回用户列表
      *
-     * @return
+     * @return userList
      * @author 周杰
      * @date 2018/11/30
      */
+    private List<User> getUserList() {
+        List<User> users = new ArrayList<>();
+        for (User user : userRepository.findAll()) {
+            users.add(user);
+        }
+        return users;
+    }
+
+    /**
+     * 查询所有用户
+     *
+     * @return user
+     * @author 周杰
+     * @date 2018/12/16
+     */
     @GetMapping
     public ModelAndView list(Model model) {
-        model.addAttribute("userList", userRepository.listUser());
+        model.addAttribute("userList", getUserList());
         model.addAttribute("title", "用户管理");
         return new ModelAndView("users/list", "userModel", model);
     }
@@ -46,7 +63,7 @@ public class UserController {
      */
     @GetMapping("{id}")
     public ModelAndView view(@PathVariable("id") Long id, Model model) {
-        User user = userRepository.getUserById(id);
+        User user = userRepository.findOne(id);
         model.addAttribute("user", user);
         model.addAttribute("title", "查看用户");
         return new ModelAndView("users/view", "userModel", model);
@@ -75,7 +92,7 @@ public class UserController {
      */
     @PostMapping
     public ModelAndView saveOrUpdateUser(User user) {
-        userRepository.saveOrUpdateUser(user);
+        userRepository.save(user);
         return new ModelAndView("redirect:/users"); // 重定向到list页面
     }
 
@@ -87,9 +104,12 @@ public class UserController {
      * @date 2018/12/2
      */
     @GetMapping("delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Long id) {
-        userRepository.deleteUser(id);
-        return new ModelAndView("redirect:/users"); // 重定向到list页面
+    public ModelAndView delete(@PathVariable("id") Long id, Model model) {
+        userRepository.delete(id);
+        model.addAttribute("userList", getUserList());
+        model.addAttribute("title", "删除用户");
+
+        return new ModelAndView("users/list", "userModel", model); // 重定向到list页面
     }
 
     /**
@@ -101,7 +121,7 @@ public class UserController {
      */
     @GetMapping("modify/{id}")
     public ModelAndView modify(@PathVariable("id") Long id, Model model) {
-        User user = userRepository.getUserById(id);
+        User user = userRepository.findOne(id);
         model.addAttribute("user", user);
         model.addAttribute("title", "修改用户");
         return new ModelAndView("users/form", "userModel", model);
