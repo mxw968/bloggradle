@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Thymeleaf in action</title>
+    <link href="../../static/css/blog.css" th:href="@{/css/blog.css}" rel="stylesheet">
 </head>
 <body>
-<div th:fragment="footer">
-    <a href="https://mxw968.github.io/">欢迎来到Boom Z的博客</a>
-</div>
+<footer class="blog-footer" th:fragment="footer">
+    <p>Welcome to  <a href="https://mxw968.github.io/">欢迎来到Boom Z的博客</a></p>
+</footer>
 </body>
 </html>
