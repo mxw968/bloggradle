@@ -54,4 +54,10 @@ dependencies {
     
     // 添加JNA依赖
     compile('net.java.dev.jna:jna:4.3.0')
+
+    // 添加Spring Security依赖
+    compile('org.springframework.boot:spring-boot-starter-security')
+
+    // 添加 thymeleaf Spring Security依赖
+    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
 }
