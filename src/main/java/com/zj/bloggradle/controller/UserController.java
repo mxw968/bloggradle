@@ -24,21 +24,6 @@ public class UserController {
     private UserRepository userRepository;
 
     /**
-     * 读取数据库用户数据返回用户列表
-     *
-     * @return userList
-     * @author 周杰
-     * @date 2018/11/30
-     */
-    private List<User> getUserList() {
-        List<User> users = new ArrayList<>();
-        for (User user : userRepository.findAll()) {
-            users.add(user);
-        }
-        return users;
-    }
-
-    /**
      * 查询所有用户
      *
      * @return user
@@ -47,7 +32,7 @@ public class UserController {
      */
     @GetMapping
     public ModelAndView list(Model model) {
-        model.addAttribute("userList", getUserList());
+        model.addAttribute("userList", userRepository.findAll());
         model.addAttribute("title", "用户管理");
         return new ModelAndView("users/list", "userModel", model);
     }
@@ -104,12 +89,9 @@ public class UserController {
      * @date 2018/12/2
      */
     @GetMapping("delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Long id, Model model) {
+    public ModelAndView delete(@PathVariable("id") Long id) {
         userRepository.delete(id);
-        model.addAttribute("userList", getUserList());
-        model.addAttribute("title", "删除用户");
-
-        return new ModelAndView("users/list", "userModel", model); // 重定向到list页面
+        return new ModelAndView("redirect:/users"); // 重定向到list页面
     }
 
     /**
